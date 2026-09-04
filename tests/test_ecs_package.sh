@@ -16,7 +16,7 @@ mkdir -p "$STAGE" "$NATIVE_STAGE" "$PROJECT"
 cp -R "$REPOSITORY/." "$STAGE/"
 cp -R "$REPOSITORY/native/." "$NATIVE_STAGE/"
 sed -i.bak \
-    "s|ecs_native = { package = \"github:ecs-native\", version = \"0.1.0\" }|ecs_native = { path = \"$NATIVE_STAGE\", package = \"github:ecs-native\", version = \"0.1.0\" }|" \
+    "s|ecs_native = { package = \"github:ecs-native\", version = \"0.2.0\" }|ecs_native = { path = \"$NATIVE_STAGE\", package = \"github:ecs-native\", version = \"0.2.0\" }|" \
     "$STAGE/kelvra.toml"
 rm -f "$STAGE/kelvra.toml.bak"
 if [[ "$(uname -s)" == "Darwin" ]]; then
@@ -34,8 +34,8 @@ printf '%s\n' \
     'version = "0.0.0"' \
     '' \
     '[dependencies]' \
-    "\"github.com/kelvralang/ecs\" = { path = \"$STAGE\", version = \"0.1.0\" }" \
-    "ecs_native = { path = \"$NATIVE_STAGE\", version = \"0.1.0\" }" \
+    "\"github.com/kelvralang/ecs\" = { path = \"$STAGE\", version = \"0.2.0\" }" \
+    "ecs_native = { path = \"$NATIVE_STAGE\", version = \"0.2.0\" }" \
     > "$PROJECT/kelvra.toml"
 
 cd "$PROJECT"
