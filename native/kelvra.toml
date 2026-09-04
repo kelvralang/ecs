@@ -2,13 +2,13 @@ kind = "native"
 import_name = "ecs_native"
 namespace = "github"
 name = "ecs-native"
-version = "0.1.0"
+version = "0.2.0"
 license = "MIT"
 abi_version = 3
-mog_runtime = "^0.1.5"
-author = "Mog contributors"
-description = "Private C++ bindings for github.com/moglang/ecs."
-repository = "https://github.com/moglang/ecs"
+kelvra_runtime = "^0.2.0"
+author = "Kelvra contributors"
+description = "Private C++ bindings for github.com/kelvralang/ecs."
+repository = "https://github.com/kelvralang/ecs"
 dependencies = []
 
 [native]

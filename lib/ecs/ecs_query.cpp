@@ -6,7 +6,7 @@
 #include "ecs/ecs_component_pool.hpp"
 #include "ecs/ecs_world.hpp"
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 
 EcsErrorCode EcsQuery::create(
     EcsWorld& world, const EcsComponentTypeId* required_types,
@@ -141,4 +141,4 @@ bool EcsQuery::contains_required_type(
                      component_type) != required_types_.end();
 }
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

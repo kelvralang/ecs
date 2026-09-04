@@ -3,7 +3,7 @@
 #include <limits>
 #include <stdexcept>
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 namespace {
 
 constexpr std::uint32_t kFirstGeneration = 1;
@@ -72,4 +72,4 @@ EntityValidation EntityManager::validate(EcsEntityId entity) const noexcept {
     return alive_[index] ? EntityValidation::Alive : EntityValidation::Invalid;
 }
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

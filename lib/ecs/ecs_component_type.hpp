@@ -5,7 +5,7 @@
 
 #include "ecs/ecs_error.hpp"
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 
 using EcsComponentTypeId = std::uint32_t;
 
@@ -24,4 +24,4 @@ struct ComponentRegistrationResult {
     explicit operator bool() const noexcept { return ok(); }
 };
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

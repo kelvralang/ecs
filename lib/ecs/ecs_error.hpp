@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 
 enum class EcsErrorCode : std::uint32_t {
     Ok = 0,
@@ -22,4 +22,4 @@ enum class EcsErrorCode : std::uint32_t {
     ComponentTypeConflict,
 };
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

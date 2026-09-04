@@ -39,11 +39,11 @@ void require(bool condition, const char* message) {
 }
 
 void benchmark_cpp(std::size_t count) {
-    mog::ecs::EcsWorld world;
+    kelvra::ecs::EcsWorld world;
     const auto position = world.register_component("Position", sizeof(Value), alignof(Value));
     const auto velocity = world.register_component("Velocity", sizeof(Value), alignof(Value));
     require(position && velocity, "C++ component registration failed");
-    std::vector<mog::ecs::EcsEntityId> entities;
+    std::vector<kelvra::ecs::EcsEntityId> entities;
     entities.reserve(count);
     report("cpp", count, "entity-create", measure_ns(count, [&] {
         for (std::size_t i = 0; i < count; ++i) entities.push_back(world.create_entity());
@@ -52,10 +52,10 @@ void benchmark_cpp(std::size_t count) {
     report("cpp", count, "component-add-two", measure_ns(count * 2, [&] {
         for (const auto entity : entities) {
             require(world.add_component(entity, position.component_type, &initial,
-                                        sizeof(initial)) == mog::ecs::EcsErrorCode::Ok,
+                                        sizeof(initial)) == kelvra::ecs::EcsErrorCode::Ok,
                     "C++ component add failed");
             require(world.add_component(entity, velocity.component_type, &initial,
-                                        sizeof(initial)) == mog::ecs::EcsErrorCode::Ok,
+                                        sizeof(initial)) == kelvra::ecs::EcsErrorCode::Ok,
                     "C++ component add failed");
         }
     }));
@@ -64,52 +64,52 @@ void benchmark_cpp(std::size_t count) {
         for (const auto entity : entities) {
             Value value{};
             require(world.read_component(entity, position.component_type, &value,
-                                         sizeof(value)) == mog::ecs::EcsErrorCode::Ok,
+                                         sizeof(value)) == kelvra::ecs::EcsErrorCode::Ok,
                     "C++ component read failed");
             ++value.x;
             checksum += value.x;
             require(world.write_component(entity, position.component_type, &value,
-                                          sizeof(value)) == mog::ecs::EcsErrorCode::Ok,
+                                          sizeof(value)) == kelvra::ecs::EcsErrorCode::Ok,
                     "C++ component write failed");
         }
     }));
-    std::unique_ptr<mog::ecs::EcsQuery> one_query;
-    require(mog::ecs::EcsQuery::create(world, &position.component_type, 1,
-                                       one_query) == mog::ecs::EcsErrorCode::Ok,
+    std::unique_ptr<kelvra::ecs::EcsQuery> one_query;
+    require(kelvra::ecs::EcsQuery::create(world, &position.component_type, 1,
+                                       one_query) == kelvra::ecs::EcsErrorCode::Ok,
             "C++ one-component query creation failed");
     report("cpp", count, "query-one", measure_ns(count, [&] {
         bool has_value = false;
-        while (one_query->next(has_value) == mog::ecs::EcsErrorCode::Ok && has_value) {
-            mog::ecs::EcsEntityId entity = 0;
-            require(one_query->entity(entity) == mog::ecs::EcsErrorCode::Ok,
+        while (one_query->next(has_value) == kelvra::ecs::EcsErrorCode::Ok && has_value) {
+            kelvra::ecs::EcsEntityId entity = 0;
+            require(one_query->entity(entity) == kelvra::ecs::EcsErrorCode::Ok,
                     "C++ query entity failed");
             checksum += entity != 0 ? 1U : 0U;
         }
     }));
-    std::unique_ptr<mog::ecs::EcsQuery> query;
-    const mog::ecs::EcsComponentTypeId required[] = {
+    std::unique_ptr<kelvra::ecs::EcsQuery> query;
+    const kelvra::ecs::EcsComponentTypeId required[] = {
         position.component_type, velocity.component_type};
-    require(mog::ecs::EcsQuery::create(world, required, 2, query) ==
-                mog::ecs::EcsErrorCode::Ok,
+    require(kelvra::ecs::EcsQuery::create(world, required, 2, query) ==
+                kelvra::ecs::EcsErrorCode::Ok,
             "C++ query creation failed");
     report("cpp", count, "query-two-read-write", measure_ns(count, [&] {
         bool has_value = false;
-        while (query->next(has_value) == mog::ecs::EcsErrorCode::Ok && has_value) {
+        while (query->next(has_value) == kelvra::ecs::EcsErrorCode::Ok && has_value) {
             Value value{};
             require(query->read_component(position.component_type, &value, sizeof(value)) ==
-                        mog::ecs::EcsErrorCode::Ok,
+                        kelvra::ecs::EcsErrorCode::Ok,
                     "C++ query read failed");
             ++value.x;
             checksum += value.x;
             require(query->write_component(position.component_type, &value, sizeof(value)) ==
-                        mog::ecs::EcsErrorCode::Ok,
+                        kelvra::ecs::EcsErrorCode::Ok,
                     "C++ query write failed");
         }
     }));
     report("cpp", count, "component-remove", measure_ns(count, [&] {
         for (const auto entity : entities)
             require(world.remove_component(entity, velocity.component_type) ==
-                        mog::ecs::EcsErrorCode::Ok,
+                        kelvra::ecs::EcsErrorCode::Ok,
                     "C++ component remove failed");
     }));
     report("cpp", count, "entity-destroy", measure_ns(count, [&] {

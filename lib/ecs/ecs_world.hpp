@@ -10,7 +10,7 @@
 #include "ecs/ecs_component_type.hpp"
 #include "ecs/ecs_entity_manager.hpp"
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 
 class EcsWorld {
 public:
@@ -71,4 +71,4 @@ private:
     std::uint64_t structural_version_ = 0;
 };
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

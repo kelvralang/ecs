@@ -12,10 +12,10 @@
 
 namespace {
 
-using mog::ecs::EcsErrorCode;
-using mog::ecs::EcsQuery;
-using mog::ecs::EcsWorld;
-using mog::ecs::HandleTable;
+using kelvra::ecs::EcsErrorCode;
+using kelvra::ecs::EcsQuery;
+using kelvra::ecs::EcsWorld;
+using kelvra::ecs::HandleTable;
 
 struct QueryRecord {
     EcsWorldHandle world_handle;

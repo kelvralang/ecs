@@ -1,4 +1,4 @@
-const ecs = @import("github.com/moglang/ecs")
+const ecs = @import("github.com/kelvralang/ecs")
 
 fn require(condition bool, message str) void {
     if (!condition) {

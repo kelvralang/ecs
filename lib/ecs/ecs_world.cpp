@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 namespace {
 
 bool is_power_of_two(std::uint32_t value) noexcept {
@@ -200,4 +200,4 @@ EcsErrorCode EcsWorld::validate_entity(EcsEntityId entity) const noexcept {
     return EcsErrorCode::InternalError;
 }
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

@@ -6,7 +6,7 @@
 
 #include "ecs/ecs_entity.hpp"
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 
 enum class EntityValidation {
     Alive,
@@ -30,4 +30,4 @@ private:
     std::size_t alive_count_ = 0;
 };
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

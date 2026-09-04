@@ -1,0 +1,15 @@
+kind = "source"
+module = "github.com/kelvralang/ecs"
+import_name = "ecs"
+namespace = "github"
+name = "ecs"
+version = "0.2.0"
+license = "MIT"
+kelvra_runtime = "^0.2.0"
+author = "Kelvra contributors"
+description = "A native-performance C++ entity-component-system package for Kelvra."
+repository = "https://github.com/kelvralang/ecs"
+entry = "src/main.kel"
+
+[dependencies]
+ecs_native = { package = "github:ecs-native", version = "0.2.0" }

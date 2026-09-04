@@ -7,9 +7,9 @@ BUILD_DIR="$3"
 TEST_DIR="$REPOSITORY/tests"
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
-export MOG_CACHE_DIR="$WORK_DIR/cache"
+export KELVRA_CACHE_DIR="$WORK_DIR/cache"
 
-STAGE="$WORK_DIR/github.com/moglang/ecs"
+STAGE="$WORK_DIR/github.com/kelvralang/ecs"
 NATIVE_STAGE="$WORK_DIR/github/ecs-native"
 PROJECT="$WORK_DIR/project"
 mkdir -p "$STAGE" "$NATIVE_STAGE" "$PROJECT"
@@ -17,8 +17,8 @@ cp -R "$REPOSITORY/." "$STAGE/"
 cp -R "$REPOSITORY/native/." "$NATIVE_STAGE/"
 sed -i.bak \
     "s|ecs_native = { package = \"github:ecs-native\", version = \"0.1.0\" }|ecs_native = { path = \"$NATIVE_STAGE\", package = \"github:ecs-native\", version = \"0.1.0\" }|" \
-    "$STAGE/mog.toml"
-rm -f "$STAGE/mog.toml.bak"
+    "$STAGE/kelvra.toml"
+rm -f "$STAGE/kelvra.toml.bak"
 if [[ "$(uname -s)" == "Darwin" ]]; then
     cp "$BUILD_DIR/native/package.so" "$NATIVE_STAGE/package.dylib"
 else
@@ -34,13 +34,13 @@ printf '%s\n' \
     'version = "0.0.0"' \
     '' \
     '[dependencies]' \
-    "\"github.com/moglang/ecs\" = { path = \"$STAGE\", version = \"0.1.0\" }" \
+    "\"github.com/kelvralang/ecs\" = { path = \"$STAGE\", version = \"0.1.0\" }" \
     "ecs_native = { path = \"$NATIVE_STAGE\", version = \"0.1.0\" }" \
-    > "$PROJECT/mog.toml"
+    > "$PROJECT/kelvra.toml"
 
 cd "$PROJECT"
 
-SUCCESS_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_import_native_ecs.mog" 2>&1)" || {
+SUCCESS_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_import_native_ecs.kel" 2>&1)" || {
     printf '%s\n' "$SUCCESS_OUTPUT"
     exit 1
 }
@@ -51,7 +51,7 @@ if [[ "$SUCCESS_OUTPUT" != *"ecs_native_ok"* ]]; then
 fi
 
 set +e
-INVALIDATION_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_import_native_ecs_invalidation.mog" 2>&1)"
+INVALIDATION_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_import_native_ecs_invalidation.kel" 2>&1)"
 INVALIDATION_STATUS=$?
 set -e
 
@@ -61,7 +61,7 @@ if [[ $INVALIDATION_STATUS -eq 0 ]] ||
     exit 1
 fi
 
-WRAPPER_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_wrapper.mog" 2>&1)" || {
+WRAPPER_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_wrapper.kel" 2>&1)" || {
     printf '%s\n' "$WRAPPER_OUTPUT"
     exit 1
 }
@@ -71,7 +71,7 @@ if [[ "$WRAPPER_OUTPUT" != *"ecs_wrapper_ok"* ]]; then
     exit 1
 fi
 
-CODEC_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_codecs.mog" 2>&1)" || {
+CODEC_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_codecs.kel" 2>&1)" || {
     printf '%s\n' "$CODEC_OUTPUT"
     exit 1
 }
@@ -81,7 +81,7 @@ if [[ "$CODEC_OUTPUT" != *"ecs_codecs_ok"* ]]; then
     exit 1
 fi
 
-MATRIX_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_language_matrix.mog" 2>&1)" || {
+MATRIX_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_language_matrix.kel" 2>&1)" || {
     printf '%s\n' "$MATRIX_OUTPUT"
     exit 1
 }
@@ -92,7 +92,7 @@ if [[ "$MATRIX_OUTPUT" != *"ecs_language_matrix_ok"* ]]; then
 fi
 
 set +e
-OWNERSHIP_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_wrapper_wrong_world.mog" 2>&1)"
+OWNERSHIP_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_wrapper_wrong_world.kel" 2>&1)"
 OWNERSHIP_STATUS=$?
 set -e
 
@@ -103,7 +103,7 @@ if [[ $OWNERSHIP_STATUS -eq 0 ]] ||
 fi
 
 set +e
-SIZE_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_wrapper_wrong_size.mog" 2>&1)"
+SIZE_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_wrapper_wrong_size.kel" 2>&1)"
 SIZE_STATUS=$?
 set -e
 
@@ -114,7 +114,7 @@ if [[ $SIZE_STATUS -eq 0 ]] ||
 fi
 
 set +e
-SCHEMA_SIZE_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_schema_wrong_buffer.mog" 2>&1)"
+SCHEMA_SIZE_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_schema_wrong_buffer.kel" 2>&1)"
 SCHEMA_SIZE_STATUS=$?
 set -e
 
@@ -125,7 +125,7 @@ if [[ $SCHEMA_SIZE_STATUS -eq 0 ]] ||
 fi
 
 set +e
-UNSUPPORTED_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_schema_unsupported.mog" 2>&1)"
+UNSUPPORTED_OUTPUT="$($INTERPRETER "$TEST_DIR/sample_ecs_schema_unsupported.kel" 2>&1)"
 UNSUPPORTED_STATUS=$?
 set -e
 
@@ -135,7 +135,7 @@ if [[ $UNSUPPORTED_STATUS -eq 0 ]] ||
     exit 1
 fi
 
-EXAMPLE_OUTPUT="$($INTERPRETER "$REPOSITORY/examples/position_velocity.mog" 2>&1)" || {
+EXAMPLE_OUTPUT="$($INTERPRETER "$REPOSITORY/examples/position_velocity.kel" 2>&1)" || {
     printf '%s\n' "$EXAMPLE_OUTPUT"
     exit 1
 }

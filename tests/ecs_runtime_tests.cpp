@@ -12,14 +12,14 @@
 
 namespace {
 
-using mog::ecs::EcsErrorCode;
-using mog::ecs::EcsWorld;
-using mog::ecs::EntityManager;
-using mog::ecs::ComponentPool;
-using mog::ecs::EcsQuery;
-using mog::ecs::entity_generation;
-using mog::ecs::entity_index;
-using mog::ecs::pack_entity;
+using kelvra::ecs::EcsErrorCode;
+using kelvra::ecs::EcsWorld;
+using kelvra::ecs::EntityManager;
+using kelvra::ecs::ComponentPool;
+using kelvra::ecs::EcsQuery;
+using kelvra::ecs::entity_generation;
+using kelvra::ecs::entity_index;
+using kelvra::ecs::pack_entity;
 
 class TestContext {
 public:
@@ -78,7 +78,7 @@ void test_entity_lifecycle(TestContext& test) {
 void test_many_entities(TestContext& test) {
     constexpr std::size_t kEntityCount = 100000;
     EntityManager entities;
-    std::vector<mog::ecs::EcsEntityId> original;
+    std::vector<kelvra::ecs::EcsEntityId> original;
     original.reserve(kEntityCount);
 
     for (std::size_t index = 0; index < kEntityCount; ++index) {
@@ -343,7 +343,7 @@ void test_queries(TestContext& test) {
     const auto health = world.register_component(
         "Health", sizeof(std::int32_t), alignof(std::int32_t));
 
-    std::vector<mog::ecs::EcsEntityId> entities;
+    std::vector<kelvra::ecs::EcsEntityId> entities;
     for (std::int32_t index = 0; index < 4; ++index) {
         const auto entity = world.create_entity();
         entities.push_back(entity);
@@ -368,7 +368,7 @@ void test_queries(TestContext& test) {
         }
     }
 
-    auto count_matches = [&](const std::vector<mog::ecs::EcsComponentTypeId>&
+    auto count_matches = [&](const std::vector<kelvra::ecs::EcsComponentTypeId>&
                                  required) {
         std::unique_ptr<EcsQuery> query;
         EXPECT(test, EcsQuery::create(world, required.data(),
@@ -377,7 +377,7 @@ void test_queries(TestContext& test) {
         std::size_t count = 0;
         bool has_value = false;
         while (query->next(has_value) == EcsErrorCode::Ok && has_value) {
-            mog::ecs::EcsEntityId current = 0;
+            kelvra::ecs::EcsEntityId current = 0;
             EXPECT(test, query->entity(current) == EcsErrorCode::Ok);
             EXPECT(test, world.is_alive(current));
             ++count;
@@ -393,7 +393,7 @@ void test_queries(TestContext& test) {
                                 health.component_type}) == 1);
 
     std::unique_ptr<EcsQuery> query;
-    const mog::ecs::EcsComponentTypeId movement_types[] = {
+    const kelvra::ecs::EcsComponentTypeId movement_types[] = {
         position.component_type, velocity.component_type};
     EXPECT(test, EcsQuery::create(world, movement_types, 2, query) ==
                      EcsErrorCode::Ok);
@@ -411,7 +411,7 @@ void test_queries(TestContext& test) {
     EXPECT(test, world.add_component(entities[3], velocity.component_type,
                                      &extra, sizeof(extra)) == EcsErrorCode::Ok);
     EXPECT(test, query->next(has_value) == EcsErrorCode::QueryInvalidated);
-    mog::ecs::EcsEntityId current_entity = 0;
+    kelvra::ecs::EcsEntityId current_entity = 0;
     EXPECT(test, query->entity(current_entity) ==
                      EcsErrorCode::QueryInvalidated);
 }
@@ -428,22 +428,22 @@ void test_query_validation_and_empty_results(TestContext& test) {
 
     EXPECT(test, EcsQuery::create(world, nullptr, 0, query) ==
                      EcsErrorCode::InvalidArgument);
-    const mog::ecs::EcsComponentTypeId invalid[] = {999};
+    const kelvra::ecs::EcsComponentTypeId invalid[] = {999};
     EXPECT(test, EcsQuery::create(world, invalid, 1, query) ==
                      EcsErrorCode::InvalidComponentType);
-    const mog::ecs::EcsComponentTypeId duplicate[] = {
+    const kelvra::ecs::EcsComponentTypeId duplicate[] = {
         first.component_type, first.component_type};
     EXPECT(test, EcsQuery::create(world, duplicate, 2, query) ==
                      EcsErrorCode::InvalidArgument);
 
-    const mog::ecs::EcsComponentTypeId intersection[] = {
+    const kelvra::ecs::EcsComponentTypeId intersection[] = {
         first.component_type, second.component_type};
     EXPECT(test, EcsQuery::create(world, intersection, 2, query) ==
                      EcsErrorCode::Ok);
     bool has_value = true;
     EXPECT(test, query->next(has_value) == EcsErrorCode::Ok);
     EXPECT(test, !has_value);
-    mog::ecs::EcsEntityId entity = 0;
+    kelvra::ecs::EcsEntityId entity = 0;
     EXPECT(test, query->entity(entity) == EcsErrorCode::InvalidArgument);
 }
 
