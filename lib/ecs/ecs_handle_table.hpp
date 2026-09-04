@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 
 template <typename T>
 class HandleTable {
@@ -97,4 +97,4 @@ private:
     std::vector<std::uint32_t> free_slots_;
 };
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

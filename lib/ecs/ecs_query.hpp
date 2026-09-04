@@ -9,7 +9,7 @@
 #include "ecs/ecs_entity.hpp"
 #include "ecs/ecs_error.hpp"
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 
 class ComponentPool;
 class EcsWorld;
@@ -48,4 +48,4 @@ private:
     bool has_current_ = false;
 };
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

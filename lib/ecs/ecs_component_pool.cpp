@@ -3,7 +3,7 @@
 #include <cstring>
 #include <stdexcept>
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 
 EcsErrorCode ComponentPool::add(EcsEntityId entity,
                                 const void* component_data,
@@ -126,4 +126,4 @@ std::uint32_t ComponentPool::dense_index(EcsEntityId entity) const noexcept {
     return index;
 }
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

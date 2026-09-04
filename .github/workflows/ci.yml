@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   compatibility:
-    name: ${{ matrix.target }} / Mog ${{ matrix.runtime_ref }}
+    name: ${{ matrix.target }} / Kelvra ${{ matrix.runtime_ref }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 25
     strategy:
@@ -35,37 +35,37 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          repository: moglang/mog
+          repository: kelvralang/kelvra
           ref: ${{ matrix.runtime_ref }}
-          path: .runtime/mog
+          path: .runtime/kelvra
       - name: Verify release metadata
         shell: bash
         run: |
           set -euo pipefail
-          version="$(sed -n 's/^version = "\([^"]*\)"/\1/p' mog.toml | head -n 1)"
-          native_version="$(sed -n 's/^version = "\([^"]*\)"/\1/p' native/mog.toml | head -n 1)"
+          version="$(sed -n 's/^version = "\([^"]*\)"/\1/p' kelvra.toml | head -n 1)"
+          native_version="$(sed -n 's/^version = "\([^"]*\)"/\1/p' native/kelvra.toml | head -n 1)"
           test -n "$version"
           test "$native_version" = "$version"
           test -f LICENSE
-          test -f package.api.mog
-          test -f native/package.api.mog
-          test -f tests/sample_ecs_wrapper.mog
+          test -f package.api.kel
+          test -f native/package.api.kel
+          test -f tests/sample_ecs_wrapper.kel
           grep -Fq "## $version" CHANGELOG.md
           grep -Fq 'MIT License' LICENSE
-          grep -q '^```mog' README.md
-          grep -Fq '"${{ matrix.target }}"' native/mog.toml
-          cmp NativePackageAPI.hpp .runtime/mog/src/NativePackageAPI.hpp
+          grep -q '^```kelvra' README.md
+          grep -Fq '"${{ matrix.target }}"' native/kelvra.toml
+          cmp NativePackageAPI.hpp .runtime/kelvra/src/NativePackageAPI.hpp
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             test "${GITHUB_REF_NAME#v}" = "$version"
           fi
-      - name: Build Mog runtime
+      - name: Build Kelvra runtime
         run: |
-          cmake -S .runtime/mog -B .runtime/mog/build -DCMAKE_BUILD_TYPE=Release
-          cmake --build .runtime/mog/build --parallel
+          cmake -S .runtime/kelvra -B .runtime/kelvra/build -DCMAKE_BUILD_TYPE=Release
+          cmake --build .runtime/kelvra/build --parallel
       - name: Build and test ECS package
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
-            -DMOG_EXECUTABLE="$GITHUB_WORKSPACE/.runtime/mog/build/mog"
+            -DKELVRA_EXECUTABLE="$GITHUB_WORKSPACE/.runtime/kelvra/build/kelvra"
           cmake --build build --parallel
           ctest --test-dir build --output-on-failure
 

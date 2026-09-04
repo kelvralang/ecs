@@ -1,4 +1,4 @@
-const ecs = @import("github.com/moglang/ecs")
+const ecs = @import("github.com/kelvralang/ecs")
 
 var schema ecs.Schema = ecs.CreateSchema()
 const value ecs.Field = schema.addI32("value")

@@ -9,7 +9,7 @@
 #include "ecs/ecs_component_type.hpp"
 #include "ecs/ecs_entity.hpp"
 
-namespace mog::ecs {
+namespace kelvra::ecs {
 
 class ComponentPool {
 public:
@@ -44,4 +44,4 @@ private:
     std::vector<std::uint32_t> sparse_;
 };
 
-}  // namespace mog::ecs
+}  // namespace kelvra::ecs

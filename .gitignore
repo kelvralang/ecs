@@ -1,5 +1,5 @@
 /build/
-/.mog/
-/mog.lock
+/.kelvra/
+/kelvra.lock
 /native/package.so
 /native/package.dylib
